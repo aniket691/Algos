@@ -46,6 +46,7 @@ public class Array {
         int max = Integer.MIN_VALUE;
         int curr = 0;
         for (int i = 0; i < nums.length; i++) {
+            curr += nums[i];
             max = Math.max(curr, max);
             if (curr < 0) curr = 0;
         }
@@ -67,9 +68,11 @@ public class Array {
             if (nums[i] == nums[i - 1]) flag = true;
         }
         return flag;
+
+        //TODO: try slow fast pointer
     }
 
-    //https://www.google.com/url?q=https://www.geeksforgeeks.org/chocolate-distribution-problem/&sa=D&source=editors&ust=1676984418030662&usg=AOvVaw0CxYbEsyCp97SaPcjX_sHh
+    //https://practice.geeksforgeeks.org/problems/chocolate-distribution-problem3825/1
 
     /**
      * Choclate distribution problem
@@ -101,31 +104,29 @@ public class Array {
      * check where our target lies in the left or right
      * and use quick sort concept to search the target
      *
-     * @param A
+     * @param arr
      * @param target
      * @return
      */
-    public int search(int[] A, int target) {
-        int lo = 0;
-        int hi = A.length - 1;
-        while (lo < hi) {
-            int mid = (lo + hi) / 2;
-            if (A[mid] == target) return mid;
-            if (A[lo] <= A[mid]) {
-                if (target >= A[lo] && target < A[mid]) {
-                    hi = mid - 1;
-                } else {
-                    lo = mid + 1;
-                }
-            } else {
-                if (target > A[mid] && target <= A[hi]) {
-                    lo = mid + 1;
-                } else {
-                    hi = mid - 1;
-                }
+    public int search(int[] arr, int target) {
+        int low = 0, high = arr.length - 1; //<---step 1
+        while (low <= high) { //<--- step 2
+            int mid = (low + high) / 2; //<----step 3
+            if (arr[mid] == target)
+                return mid; // <---step 4
+            if (arr[low] <= arr[mid]) { //<---step 5
+                if (arr[low] <= target && arr[mid] >= target)
+                    high = mid - 1; //<---step 6
+                else
+                    low = mid + 1; //<---step 7
+            } else { //<---step 7
+                if (arr[mid] <= target && target <= arr[high])
+                    low = mid + 1;
+                else
+                    high = mid - 1;
             }
         }
-        return A[lo] == target ? lo : -1;
+        return -1; //<---step 8
     }
 
     //https://leetcode.com/problems/next-permutation/
@@ -228,6 +229,7 @@ public class Array {
     }
 
     //https://practice.geeksforgeeks.org/problems/find-missing-and-repeating2512/1
+    //https://www.notion.so/Images-DSA-e319f659179d4ef790f8266dc86404c2?pvs=4#8b5d284d84144bf090df9bf856b0cf50
 
     /**
      * first do xor of all elements in array
@@ -281,10 +283,80 @@ public class Array {
         return ans;
     }
 
+    /**
+     * use prefix sum and suffix sum(product in this case) concept but instead of doing it in separate array
+     * calculate it in the array only without using extra space
+     * main curr variable
+     * every time do ans[i]*curr and the insert nums[i] into curr
+     * from i to n
+     * after that do it in reverse order this will mimic prefix and suffix sum logic
+     * without using extra space
+     *
+     * @param arr
+     * @return
+     */
+    //https://leetcode.com/problems/product-of-array-except-self/
+    public int[] productExceptSelf(int[] arr) {
+        int n = arr.length;
+        int ans[] = new int[arr.length];
+        Arrays.fill(ans, 1);
+        int curr = 1;
+        for (int i = 0; i < arr.length; i++) {
+            ans[i] *= curr;
+            curr *= arr[i];
+        }
+        curr = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            ans[i] *= curr;
+            curr *= arr[i];
+        }
+        return ans;
+    }
+
     //https://leetcode.com/problems/trapping-rain-water/
     //TODO: trapping rainwater problem - hard
 
 
+    //https://www.geeksforgeeks.org/given-a-sorted-and-rotated-array-find-if-there-is-a-pair-with-a-given-sum/?ref=lbp
+    //TODO: Find if there is a pair with a given sum in the rotated sorted Array
+
+    // https://leetcode.com/problems/maximum-product-subarray
+
+    /**
+     * Case1 :- All the elements are positive : Then your answer will be product of all the elements in the array.
+     * Case2 :- Array have positive and negative elements both :
+     * If the number of negative elements is even then again your answer will
+     * be complete array because on multiplying all the negative numbers it will become positive.
+     * If the number of negative elements is odd then you have to remove just one
+     * negative element and for that u need to check your subarrays to get the max product.
+     * Case3 :- Array also contains 0 : Then there will be not much difference...its
+     * just that your array will be divided into subarray around that 0. What u have to so is just as soon as your product becomes 0 make it 1 for the next iteration, now u will be searching new subarray and previous max will already be updated.
+     * *(These cases are much clear in approach 3)
+     * explanation link below
+     */
+    //https://www.notion.so/Images-DSA-e319f659179d4ef790f8266dc86404c2?pvs=4#ee8ae7611ad74a69957067c0ee773824
+    public int maxProduct(int[] nums) {
+
+        int n = nums.length;
+        int l = 1, r = 1;
+        int ans = nums[0];
+
+        for (int i = 0; i < n; i++) {
+
+            //if any of l or r become 0 then update it to 1
+            l = l == 0 ? 1 : l;
+            r = r == 0 ? 1 : r;
+
+            l *= nums[i];   //prefix product
+            r *= nums[n - 1 - i];    //suffix product
+
+            ans = Math.max(ans, Math.max(l, r));
+
+        }
+
+        return ans;
+
+    }
 }
 
 

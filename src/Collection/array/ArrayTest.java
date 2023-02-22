@@ -29,10 +29,17 @@ public class ArrayTest {
 
         //arrayList.clear();
 
+        arrayList.ensureCapacity(6);
+
+        arrayList.lastIndexOf(3);
+        Object[] arr= arrayList.toArray();
+        for (Object i : arr) {System.out.println(i+"");
+
+        }
+
+
+
     }
 
-    @Test
-    public void arrayListMethods() {
 
-    }
 }
