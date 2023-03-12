@@ -6,6 +6,9 @@ import java.util.*;
 
 public class Array {
 
+    //TODO:max min in an array
+    //https://www.geeksforgeeks.org/maximum-and-minimum-in-an-array/
+
     //https://www.google.com/url?q=https://www.geeksforgeeks.org/write-a-program-to-reverse-an-array-or-string/&sa=D&source=editors&ust=1676984418030299&usg=AOvVaw2iYp2cXzvC76Y1HUKXVKog
 
     /**
@@ -103,6 +106,10 @@ public class Array {
      * find pivot
      * check where our target lies in the left or right
      * and use quick sort concept to search the target
+     * <p>
+     * left or right half one of them should be sorted(and will be sorted
+     * therefore we are checking on the both the side we don't know left or right which is sorted
+     * so we have to find it
      *
      * @param arr
      * @param target
@@ -202,7 +209,6 @@ public class Array {
             profit = Math.max(profit, cost);
             mini = Math.min(mini, a[i]);
         }
-
         return profit;
     }
 
@@ -232,6 +238,7 @@ public class Array {
     //https://www.notion.so/Images-DSA-e319f659179d4ef790f8266dc86404c2?pvs=4#8b5d284d84144bf090df9bf856b0cf50
 
     /**
+     * repeating and missing
      * first do xor of all elements in array
      * then do xor to 1 to n
      * then find right most bit
@@ -335,6 +342,13 @@ public class Array {
      * explanation link below
      */
     //https://www.notion.so/Images-DSA-e319f659179d4ef790f8266dc86404c2?pvs=4#ee8ae7611ad74a69957067c0ee773824
+
+    /**
+     * use kadane's algorihtm from both side
+     *
+     * @param nums
+     * @return
+     */
     public int maxProduct(int[] nums) {
 
         int n = nums.length;
@@ -357,6 +371,367 @@ public class Array {
         return ans;
 
     }
+
+
+    public boolean isPalindrome(String s) {
+
+        //String str = preprocess(s);
+        //System.out.print(str);
+        //return  isStringPalindrome(str);
+
+        //String s1 = s.toLowerCase().replaceAll("[^0-9a-z]", "");
+        //String s2 = new StringBuilder(s1).reverse().toString();
+        //return s2.equals(s1);
+
+        // s = s.toLowerCase().replaceAll("[^a-z0-9]", "");
+        //         int i = 0;
+        //         int j = s.length() - 1;
+        //         while(i <= j) {
+        //             if (s.charAt(i) != s.charAt(j)) {
+        //                 return false;
+        //             }
+        //             i++;
+        //             j--;
+        //         }
+        //         return true;
+
+        s = s.toLowerCase();
+
+        for (int i = 0, j = s.length() - 1; i <= j; i++, j--) {
+
+            if (s.length() == 1) return true;
+
+            while (i < s.length() && !Character.isLetterOrDigit(s.charAt(i))) i++;
+
+            if (i == s.length()) return true;
+
+            while (j > 0 && !Character.isLetterOrDigit(s.charAt(j))) j--;
+
+            if (s.charAt(i) != s.charAt(j)) return false;
+
+        }
+
+        return true;
+
+    }
+
+    public static void mergeArr(int[] arr1, int[] arr2, int[] c) {
+
+        int n1 = arr1.length;
+        int n2 = arr2.length;
+
+        int i = 0, j = 0, k = 0;
+
+        while (i < n1 && j < n2) {
+            if (arr1[i] <= arr2[j]) {
+                c[k] = arr1[i];
+                i++;
+            } else {
+                c[k] = arr2[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i < n1) {
+            c[k] = arr1[i];
+            i++;
+            k++;
+        }
+
+        while (j < n2) {
+            c[k] = arr2[j];
+            j++;
+            k++;
+        }
+
+    }
+
+    //merge sort
+    public static void mergeSort(int[] arr) {
+
+        if (arr.length <= 1) {
+            return;
+        }
+
+        int mid = arr.length / 2;
+
+        int s1[] = new int[mid];
+        int s2[] = new int[arr.length - mid];
+
+        for (int i = 0; i < mid; i++) {
+            s1[i] = arr[i];
+        }
+
+        for (int j = mid; j < arr.length; j++) {
+            s2[j - mid] = arr[j];
+        }
+
+        mergeSort(s1);
+        mergeSort(s2);
+
+        mergeArr(s1, s2, arr);
+    }
+
+    public static int partition(int[] a, int si, int ei) {
+
+        int pivot = a[si];
+
+        int smallCount = 0;
+
+        for (int i = si + 1; i <= ei; i++) {
+            if (a[i] < pivot) {
+                smallCount++;
+            }
+        }
+
+        int temp = a[si + smallCount];
+        a[si + smallCount] = pivot;
+        a[si] = temp;
+
+        int i = si;
+        int j = ei;
+
+        while (i < j) {
+            // findinf bigger ele
+            if (a[i] < pivot) {
+                i++;
+            } else if (a[j] >= pivot) {
+                // finding smaller
+                j--;
+            } else {
+                int temp1 = a[i];
+                a[i] = a[j];
+                a[j] = temp1;
+                i++;
+                j--;
+            }
+        }
+
+        return si + smallCount;
+    }
+
+    //quick sort
+    public static void quickSort(int[] input, int i, int j) {
+        // your code goes here
+        if (i >= j) {
+            return;
+        }
+        int p = partition(input, i, j);
+        quickSort(input, i, p - 1);
+        quickSort(input, p + 1, j);
+    }
+
+    //https://leetcode.com/problems/find-the-maximum-number-of-marked-indices/
+
+    /**
+     * sort the array
+     * divide it into two parts
+     * compare first part with the second part
+     * to mark indices as visited just increment the pointer mentioned below
+     *
+     * @param nums
+     * @return
+     */
+    public int maxNumOfMarkedIndices(int[] nums) {
+
+        Arrays.sort(nums);
+
+        int i = 0;
+        int j = nums.length / 2;
+
+        int ans = 0;
+        while (i < nums.length / 2 && j < nums.length) {
+            if (nums[i] * 2 <= nums[j]) {
+                ans += 2;
+                i++;
+                j++;
+                continue;
+            }
+            j++;
+        }
+        return ans;
+    }
+
+    //https://leetcode.com/problems/maximum-product-subarray/
+    //    int maxProduct(vector<int>&nums) {
+    //        int n = nums.size();
+    //        int l = 1, r = 1;
+    //        int ans = nums[0];
+    //
+    //        for (int i = 0; i < n; i++) {
+    //            //if any of l or r become 0 then update it to 1
+    //            l = l == 0 ? 1 : l;
+    //            r = r == 0 ? 1 : r;
+    //
+    //            l *= nums[i];   //prefix product
+    //            r *= nums[n - 1 - i];   //suffix product
+    //
+    //            ans = max(ans, max(l, r));
+    //        }
+    //        return ans;
+    //}
+
+    //https://leetcode.com/problems/find-the-divisibility-array-of-a-string/
+
+    /**
+     * int digit = word.charAt(i) - '0'; this method takes O(1)
+     * use this method to convert a string to int
+     * dont use Integer.parseInt because it takes O(n) time
+     *
+     * @param word
+     * @param m
+     * @return
+     */
+    public int[] divisibilityArray(String word, int m) {
+        // int[] ans = new int[word.length()];
+        // long val = 0;
+        // for (int i = 0; i < word.length(); i++) {
+        //         char c = word.charAt(i);
+        //         val = (10 * val + (c - '0')) % m;
+        //         if (val == 0) ans[i] = 1;
+        //         else ans[i] = 0;
+        // }
+        // return ans;
+
+        int n = word.length();
+        int[] div = new int[n];
+        int num = 0;
+        for (int i = 0; i < n; i++) {
+            int digit = word.charAt(i) - '0';
+            num = (num * 10 + digit) % m;
+            if (num == 0) {
+                div[i] = 1;
+            }
+        }
+        int prefix = 0;
+        for (int i = 0; i < n - 1; i++) {
+            prefix = (prefix * 10 + word.charAt(i) - '0') % m;
+            if (prefix == 0) {
+                div[i] = 1;
+            }
+        }
+        return div;
+    }
+
+    //https://leetcode.com/problems/container-with-most-water/submissions/
+
+    /**
+     * how we found width
+     * index j minus index i is the width
+     * why because it is mentioned in the question
+     * that Find two lines that together with the x-axis form a container,
+     * such that the container contains the most water.
+     *
+     * @param height
+     * @return
+     */
+    public int maxArea(int[] height) {
+        int ans = 0;
+        int i = 0;
+        int j = height.length - 1;
+        int max = 0;
+        while (i < j) {
+            if (height[i] <= height[j]) {
+                //if your left height is smaller then find larger height from left
+                ans = (j - i) * Math.min(height[i], height[j]);
+                max = Math.max(ans, max);
+                i++;
+            } else {
+                //if your right height is smaller then find larger height from right
+                ans = (j - i) * Math.min(height[i], height[j]);
+                max = Math.max(ans, max);
+                j--;
+            }
+        }
+        return max;
+    }
+
+    /**
+     * to make a array palindrome take two pointer i and j
+     * if arr[i] == arr[j] move i++ j--
+     * if(arr[i] <= arr[j]) merge from left
+     * if(arr[j] <= arr[i]) merge from right
+     * TODO: learn why this works
+     *
+     * @param arr
+     * @param n
+     * @return
+     */
+    //https://www.geeksforgeeks.org/find-minimum-number-of-merge-operations-to-make-an-array-palindrome/
+    static int findMinOps(int[] arr, int n) {
+        int ans = 0; // Initialize result
+
+        // Start from two corners
+        for (int i = 0, j = n - 1; i <= j; ) {
+            // If corner elements are same,
+            // problem reduces arr[i+1..j-1]
+            if (arr[i] == arr[j]) {
+                i++;
+                j--;
+            }
+
+            // If left element is greater, then
+            // we merge right two elements
+            else if (arr[i] > arr[j]) {
+                // need to merge from tail.
+                j--;
+                arr[j] += arr[j + 1];
+                ans++;
+            }
+
+            // Else we merge left two elements
+            else {
+                i++;
+                arr[i] += arr[i - 1];
+                ans++;
+            }
+        }
+
+        return ans;
+    }
+
+    /**
+     * We can also compare numbers which are in the form of strings
+     * for ex, "10".comparedTo("20")
+     * if  i < j = -1
+     * if i == j = 0
+     * if i > j = 1
+     * this concept can be used to solve below problem
+     *
+     * @param arr
+     * @return
+     */
+    //https://www.geeksforgeeks.org/given-an-array-of-numbers-arrange-the-numbers-to-form-the-biggest-number/
+    String printLargest(String[] arr) {
+
+        StringBuilder ans = new StringBuilder();
+
+        Arrays.sort(arr, new Comparator<String>() {
+            // A comparison function which is used by
+            // sort() in printLargest()
+            @Override
+            public int compare(String X, String Y) {
+
+                // first append Y at the end of X
+                String XY = X + Y;
+
+                // then append X at the end of Y
+                String YX = Y + X;
+
+                // Now see which of the two
+                // formed numbers
+                // is greater
+                return XY.compareTo(YX) > 0 ? -1 : 1;
+            }
+        });
+
+        for (String s : arr) ans.append(s);
+
+        return ans.toString();
+    }
+
+
 }
 
 
