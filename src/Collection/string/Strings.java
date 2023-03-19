@@ -1,10 +1,104 @@
 package Collection.string;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Strings {
+
+
+    boolean isPalindrome(String s) {
+
+        return false;
+    }
+
+    //https://leetcode.com/problems/valid-anagram/
+
+    /**
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isAnagram(String s, String t) {
+        if (s == null || t == null) return false;
+        if (s.length() != t.length()) return false;
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (!map.containsKey(s.charAt(i))) {
+                map.put(s.charAt(i), 1);
+            } else {
+                map.put(s.charAt(i), map.get(s.charAt(i)) + 1);
+            }
+        }
+        for (int i = 0; i < t.length(); i++) {
+            if (map.containsKey(t.charAt(i))) {
+                map.put(t.charAt(i), map.get(t.charAt(i)) - 1);
+            }
+        }
+        for (Character c : map.keySet()) {
+            if (map.get(c) > 0) {
+                return false;
+            }
+        }
+
+
+        return true;
+    }
+
+    //https://leetcode.com/problems/valid-parentheses/
+
+    /**
+     * @param s
+     * @return
+     */
+    public boolean isValid(String s) {
+
+        if (s.length() % 2 != 0) return false;
+
+        Stack<Character> stk = new Stack();
+
+        for (int i = 0; i < s.length(); i++) {
+
+            if (stk.isEmpty() == false && s.charAt(i) == ')' && stk.peek() == '(') {
+                stk.pop();
+            } else if (!stk.isEmpty() && s.charAt(i) == ']' && stk.peek() == '[') {
+                stk.pop();
+            } else if (!stk.isEmpty() && s.charAt(i) == '}' && stk.peek() == '{') {
+                stk.pop();
+            } else {
+                stk.push(s.charAt(i));
+            }
+        }
+
+        return stk.isEmpty();
+    }
+
+    //https://www.geeksforgeeks.org/print-all-the-duplicates-in-the-input-string/
+
+    /**
+     * @param str
+     * @param count
+     */
+    static void fillCharCounts(String str,
+                               int[] count) {
+        for (int i = 0; i < str.length(); i++)
+            count[str.charAt(i)]++;
+    }
+
+    /* Print duplicates present
+      in the passed string */
+    static void printDups(String str) {
+        // Create an array of size
+        // 256 and fill count of
+        // every character in it
+        int count[] = new int[256];
+        fillCharCounts(str, count);
+
+        for (int i = 0; i < 256; i++)
+            if (count[i] > 1)
+                System.out.println((char) (i) +
+                        ", count = " + count[i]);
+    }
+
+
     /**
      * don't use replace function
      * create a new string ans
@@ -26,6 +120,7 @@ public class Strings {
         }
         return ans;
     }
+
 
     /**
      * sort the array of strings
@@ -56,6 +151,42 @@ public class Strings {
         return ans;
     }
 
+    //https://www.geeksforgeeks.org/convert-sentence-equivalent-mobile-numeric-keypad-sequence/
+    // Function which computes the sequence
+
+    /**
+     * @param str
+     * @param input
+     * @return
+     */
+    //    String str[]
+    //            = { "2",    "22",  "222", "3",   "33", "333",
+    //            "4",    "44",  "444", "5",   "55", "555",
+    //            "6",    "66",  "666", "7",   "77", "777",
+    //            "7777", "8",   "88",  "888", "9",  "99",
+    //            "999",  "9999" };
+    static String printSequence(String str[], String input) {
+        String output = "";
+
+        // length of input string
+        int n = input.length();
+        for (int i = 0; i < n; i++) {
+            // Checking for space
+            if (input.charAt(i) == ' ')
+                output = output + "0";
+
+            else {
+                // Calculating index for each
+                // character
+                int position = input.charAt(i) - 'A';
+                output = output + str[position];
+            }
+        }
+
+        // Output sequence
+        return output;
+    }
+
     /**
      * insert all characters in set
      * and get all characters in put into the ans string
@@ -79,6 +210,103 @@ public class Strings {
 
         return ans;
     }
+
+
+    //https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+    /**
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstring(String s) {
+
+        Set<Character> set = new HashSet<>();
+
+        int l = 0;
+        int r = 0;
+        int max = 0;
+
+        while (r < s.length()) {
+
+            while (set.contains(s.charAt(r))) {
+                set.remove(s.charAt(l));
+                l++;
+            }
+
+            set.add(s.charAt(r));
+            max = Math.max(max, (r - l) + 1);
+            r++;
+
+        }
+        return max;
+
+        //     Set<Character> charSet = new HashSet<>();
+        // int left = 0, right = 0, maxLen = 0;
+
+        // while (right < s.length()) {
+        //     if (!charSet.contains(s.charAt(right))) {
+        //         charSet.add(s.charAt(right));
+        //         right++;
+        //         maxLen = Math.max(maxLen, right - left);
+        //     } else {
+        //         charSet.remove(s.charAt(left));
+        //         left++;
+        //     }
+        // }
+
+        // return maxLen;
+    }
+
+    //https://leetcode.com/problems/longest-repeating-character-replacement/
+
+    /**
+     * @param i
+     * @param j
+     * @param k
+     * @param map
+     * @param s
+     * @return
+     */
+    public boolean windowisValid(int i, int j, int k, Map<Character, Integer> map, String s) {
+        if ((j - i + 1) - Collections.max(map.values()) <= k) return true;
+        return false;
+    }
+
+    public int characterReplacement(String s, int k) {
+        int ans = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        int i = 0;
+        int j = 0;
+        while (j < s.length()) {
+
+            //put characters in map
+            if (!map.containsKey(s.charAt(j))) {
+                map.put(s.charAt(j), 1);
+            } else {
+                map.put(s.charAt(j), map.get(s.charAt(j)) + 1);
+            }
+
+            //when window invalid make it valid
+            while (!windowisValid(i, j, k, map, s)) {
+                map.put(s.charAt(i), map.get(s.charAt(i)) - 1);
+                i++;
+            }
+
+            //update ans
+            ans = Math.max(ans, j - i + 1);
+            j++;
+        }
+        return ans;
+    }
+
+    //https://practice.geeksforgeeks.org/problems/next-permutation5226/1
+    //TODO: nextPermutation
+    static List<Integer> nextPermutation(int N, int arr[]) {
+        // code here
+        return new ArrayList<>();
+    }
+
+    //https://www.geeksforgeeks.org/rabin-karp-algorithm-for-pattern-searching/
 
     /**
      * https://www.notion.so/Images-DSA-e319f659179d4ef790f8266dc86404c2?pvs=4#a9af40f6877e4611958424b6457d8b05 ==> image
@@ -138,7 +366,8 @@ public class Strings {
         }
     }
 
-
+    //https://practice.geeksforgeeks.org/problems/longest-prefix-suffix2527/1
+    //longest palindromic subsequences
     public void lps(String s) {
 
         int n = s.length();
@@ -159,7 +388,9 @@ public class Strings {
         }
 
         System.out.println(ans);
-
     }
+
+
+
 
 }
