@@ -56,7 +56,7 @@ public class FetchCollections {
         }
 
         //just get the ele does not remove
-        Integer ele = q1.element();
+        Integer ele = q1.peek();
 
         //removes throws exception
         //poll returns null if q is empty
