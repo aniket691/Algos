@@ -493,7 +493,7 @@ public class Array {
         int j = ei;
 
         while (i < j) {
-            // findinf bigger ele
+            // find in f bigger ele
             if (a[i] < pivot) {
                 i++;
             } else if (a[j] >= pivot) {

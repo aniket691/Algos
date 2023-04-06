@@ -433,7 +433,49 @@ public class Recursion {
         return paths;
     }
 
-    //TODO: https://www.youtube.com/watch?v=F6T3tD8Pw20&list=PL-Jc9J83PIiFxaBahjslhBD1LiJAV7nKs&index=32
+    /**
+     * @param sr
+     * @param sc
+     * @param dr
+     * @param dc
+     * @return
+     */
+    //get maze paths with jumps
+    public static ArrayList<String> getMazePathsWithJumps(int sr, int sc, int dr, int dc) {
+
+        if (sr == dr && sc == dc) {
+            ArrayList<String> bres = new ArrayList<>();
+            bres.add("");
+            return bres;
+        }
+
+        ArrayList<String> paths = new ArrayList<>();
+
+        //horizontal path
+        for (int ms = 1; ms <= dc - sc; ms++) {
+            ArrayList<String> hpaths = getMazePathsWithJumps(sr, sc + ms, dr, dc);
+            for (String hpath : hpaths) {
+                paths.add("h" + ms + hpath);
+            }
+        }
+
+        //vertical paths
+        for (int ms = 1; ms <= dr - sr; ms++) {
+            ArrayList<String> vpaths = getMazePathsWithJumps(sr + ms, sc, dr, dc);
+            for (String vpath : vpaths) {
+                paths.add("v" + ms + vpath);
+            }
+        }
+
+        for (int ms = 1; ms <= dr - sr && ms <= dc - sc; ms++) {
+            ArrayList<String> dpaths = getMazePathsWithJumps(sr + ms, sc + ms, dr, dc);
+            for (String dpath : dpaths) {
+                paths.add("d" + ms + dpath);
+            }
+        }
+
+        return paths;
+    }
 
     //flood fill
 
@@ -502,5 +544,65 @@ public class Recursion {
         //System.out.println(set);
     }
 
+
+    //https://leetcode.com/problems/n-queens/
+    //explanation
+
+    /**
+     *
+     */
+    class Solution {
+        public List<List<String>> solveNQueens(int n) {
+            List<List<String>> ans = new ArrayList<List<String>>();
+
+            char arr[][] = new char[n][n];
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    arr[i][j] = '.';
+
+            queenTry(ans, arr, 0);
+            return ans;
+        }
+
+        private void queenTry(List<List<String>> ans, char[][] arr, int row) {
+            if (row == arr.length) {
+                ans.add(build(arr));
+                return;
+            }
+            for (int col = 0; col < arr.length; col++) {
+                if (validatePosition(arr, row, col)) {
+                    arr[row][col] = 'Q';
+                    queenTry(ans, arr, row + 1);
+                    arr[row][col] = '.';
+                }
+            }
+        }
+
+        private boolean validatePosition(char[][] arr, int row, int col) {
+            //checks validity in every row for a single column
+            for (int i = 0; i < row; i++) {
+                if (arr[i][col] == 'Q')
+                    return false;
+            }
+            //checks for every 45 degree angle
+            for (int i = row - 1, j = col + 1; i >= 0 && j < arr.length; i--, j++) {
+                if (arr[i][j] == 'Q')
+                    return false;
+            }
+            //checks for every 135 degree angle
+            for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+                if (arr[i][j] == 'Q')
+                    return false;
+            }
+            return true;
+        }
+
+        private List<String> build(char arr[][]) {
+            List<String> val = new ArrayList<>();
+            for (int i = 0; i < arr.length; i++)
+                val.add(new String(arr[i]));
+            return val;
+        }
+    }
 
 }
