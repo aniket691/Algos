@@ -37,7 +37,7 @@ public class Sorting {
         return flag;
     }
 
-
+    /************************QUICK SORT START*********************************/
     public static int partition(int[] a, int si, int ei) {
         int pivot = a[si];
 
@@ -87,7 +87,9 @@ public class Sorting {
         quickSort(input, p + 1, j);
 
     }
+    /************************QUICK SORT END*********************************/
 
+    /*******************************MERGE SORT START******************************/
     public static void mergeArr(int[] arr1, int[] arr2, int[] c) {
         int n1 = arr1.length;
         int n2 = arr2.length;
@@ -120,7 +122,31 @@ public class Sorting {
         }
     }
 
+    public static void mergeSort(int arr[]) {
 
+        int mid = arr.length / 2;
+        //TODO : handle error here
+        int[] left = new int[mid];
+        int[] right = new int[arr.length - mid];
+
+        for (int i = 0; i < mid; i++) {
+            left[i] = arr[i];
+        }
+
+        for (int j = mid; j < arr.length; j++) {
+            right[j - mid] = arr[j];
+        }
+
+        mergeSort(left);
+        mergeSort(right);
+
+        mergeArr(left, right, arr);
+
+    }
+    /*******************************MERGE SORT END******************************/
+
+
+    /**********************COUNT SORT START**************************************/
     //https://www.geeksforgeeks.org/counting-sort/
 
     /**
@@ -156,6 +182,8 @@ public class Sorting {
 //        for (int i : ans) System.out.print(i + " ");
 
     }
+    /**********************COUNT SORT END**************************************/
+
 
     //https://www.geeksforgeeks.org/find-common-elements-three-sorted-arrays/
 
@@ -206,6 +234,7 @@ public class Sorting {
         return ans;
     }
 
+    /*********************RADIX SORT START*************************************/
     public static void countForRadixSort(int[] arr, int exp) {
 
         int[] ans = new int[arr.length];
@@ -259,6 +288,8 @@ public class Sorting {
             exp = exp * 10;
         }
     }
+    /*********************RADIX SORT END*************************************/
+
 
     //https://practice.geeksforgeeks.org/problems/common-elements1132/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
     //approach 1 :

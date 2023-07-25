@@ -1,6 +1,7 @@
 package test;
 
 import org.junit.Test;
+import org.w3c.dom.Node;
 
 import java.util.*;
 
@@ -107,7 +108,13 @@ public class Main {
 
     @Test
     public void mainTest() {
-        int a[] = {1, 2, 3};
-        nextPermutation(a);
+        //int a[] = {1, 2, 3};
+        //nextPermutation(a);
+
+        int a = 18;
+        int b = a & -a;
+        System.out.println(b);
+
     }
+
 }

@@ -306,6 +306,7 @@ public class Recursion {
      * @param str
      * @return
      */
+    //subsequence problem
     public static ArrayList<String> getss(String str) {
         if (str.length() == 0) {
             ArrayList<String> bres = new ArrayList<>();
@@ -344,6 +345,7 @@ public class Recursion {
      * @param str
      * @return
      */
+    //key pad combination
     public static ArrayList<String> getKpc(String str) {
         if (str.length() == 0) {
             ArrayList<String> bres = new ArrayList<>();
@@ -377,6 +379,7 @@ public class Recursion {
      * @param n
      * @return
      */
+    //staircase problem
     public static ArrayList<String> getStaircasePath(int n) {
         if (n == 0) {
             ArrayList<String> bres = new ArrayList<>();
@@ -409,6 +412,7 @@ public class Recursion {
      * @param dc
      * @return
      */
+    //maze path problem
     public static ArrayList<String> getMazePaths(int sr, int sc, int dr, int dc) {
         ArrayList<String> hpaths = new ArrayList<>();
         ArrayList<String> vpaths = new ArrayList<>();

@@ -42,6 +42,15 @@ public class FetchCollections {
         //priority queue max and min heap
         Queue<Integer> q3 = new PriorityQueue<>();
 
+        System.out.println("Deq fetch");
+        Deque<Integer> deq = new LinkedList<>();
+        deq.add(1);
+        deq.add(2);
+        deq.add(3);
+        System.out.println(deq.removeLast());
+        System.out.println(deq.removeLast());
+        System.out.println(deq.removeLast());
+
 
         for (int i = 0; i < 10; i++) {
 

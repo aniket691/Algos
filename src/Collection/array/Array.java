@@ -8,7 +8,6 @@ public class Array {
 
     //TODO:max min in an array
     //https://www.geeksforgeeks.org/maximum-and-minimum-in-an-array/
-
     //https://www.google.com/url?q=https://www.geeksforgeeks.org/write-a-program-to-reverse-an-array-or-string/&sa=D&source=editors&ust=1676984418030299&usg=AOvVaw2iYp2cXzvC76Y1HUKXVKog
 
     /**
@@ -39,8 +38,21 @@ public class Array {
 
     /**
      * Use kadane's algorithm
-     * track max variable
-     * if sum < 0  the sum will become 0
+     * The given code implements an algorithm to find the maximum sum of a contiguous subarray in an integer array.
+     * The intuition behind this algorithm is to keep track of two variables, curr and max,
+     * where curr represents the current sum of the contiguous subarray, and max represents the maximum sum of any contiguous subarray seen so far.
+     * <p>
+     * The algorithm works by iterating through the input array nums and updating the curr and max variables as follows:
+     * <p>
+     * Initialize max to the smallest possible integer value, so that any positive value encountered in the array will be greater than max.
+     * Initialize curr to 0.
+     * For each element nums[i] in the array:
+     * a. Add nums[i] to curr.
+     * b. Update max to be the maximum value between curr and max.
+     * c. If curr is negative, reset it to 0, as adding a negative number to curr will only decrease the sum of the subarray.
+     * After iterating through the entire array, return the value of max.
+     * This algorithm has a time complexity of O(n), where n is the length of the input array, as it only iterates through the array once.
+     * It has a space complexity of O(1), as it only uses two variables to store the current and maximum sums.
      *
      * @param nums
      * @return
@@ -79,9 +91,18 @@ public class Array {
 
     /**
      * Choclate distribution problem
-     * trick:
-     * sort
-     * check arr[i+m-1] and - arr[i] < min
+     * The given code is used to find the minimum difference between any two elements of an ArrayList 'a', where 'n' is the size of the ArrayList and 'm' is the number of elements that need to be considered to find the minimum difference.
+     * <p>
+     * The intuition behind this algorithm is to sort the ArrayList in ascending order and then find the minimum difference between the first and the mth elements, then move the sliding window of size m, and compare the difference between the last and the first element of the window with the current minimum difference. Keep updating the minimum difference at each step, and return the final minimum difference after iterating through all possible windows of size m.
+     * <p>
+     * Algorithm:
+     * <p>
+     * Sort the ArrayList 'a' in ascending order using Collections.sort(a).
+     * Initialize a variable 'min' with the maximum value of long.
+     * For i = 0 to i + m - 1 < n, do the following:
+     * a. Check if the difference between the ith and the (i + m - 1)th elements is less than 'min'. If yes, update 'min' to this difference.
+     * Return 'min' as the minimum difference.
+     * The time complexity of this algorithm is O(n log n) due to the sorting operation, where n is the size of the ArrayList. The space complexity is O(1) since the algorithm only uses a few variables to store the minimum difference and to keep track of the sliding window.
      *
      * @param a
      * @param n
@@ -109,7 +130,7 @@ public class Array {
      * <p>
      * left or right half one of them should be sorted(and will be sorted
      * therefore we are checking on the both the side we don't know left or right which is sorted
-     * so we have to find it
+     * So we have to find it
      *
      * @param arr
      * @param target
@@ -140,16 +161,18 @@ public class Array {
 
     /**
      * 1 4 2 3
-     * ans = a[i] < ar[i+1]
-     * ans-1
-     * 4
-     * 3
+     * breakpoint = a[i] < ar[i+1]
+     * breakpoint = 1
      * <p>
      * trick :
-     * from reverse a[i] < a[i+1]  = pivot
-     * from reverse find greater pivot
-     * swap(pivot,greater)
-     * reverse(pivot+1,arr,length-1)
+     * from reverse a[i] < a[i+1]  = breakpoint
+     * if( breakpoint >=0 ) then
+     * from reverse find greater than breakpoint
+     * ==> from above example it will be 3`1    `       1`
+     * swap(breakpoint,greater)
+     * reverse(breakpoint+1,arr,arrLength-1)
+     * else
+     * reverse(0,arr,arrLength-1)
      * <p>
      * 1 2 3 4
      * 1 2 4 3
@@ -216,8 +239,18 @@ public class Array {
 
     /**
      * find kth largest and smallest
-     * use priority queue max heap
-     * alternative approach quick select
+     * The given code is used to find the kth largest element in an integer array 'nums' using a priority queue data structure.
+     * <p>
+     * The intuition behind this algorithm is to use a max heap priority queue to keep track of the k largest elements seen so far. We add each element of the input array to the priority queue, and if the queue size exceeds k, we remove the smallest element from the queue. The kth largest element in the input array will be the smallest element in the priority queue after processing all elements.
+     * <p>
+     * Algorithm:
+     * <p>
+     * Create a max heap priority queue 'q' using the reverse order comparator. This means that the largest element will have the highest priority in the queue.
+     * For each element 'num' in the input array 'nums', do the following:
+     * a. Add the element 'num' to the priority queue 'q' using the 'add' method.
+     * b. If the size of the priority queue 'q' is greater than k, remove the smallest element from the queue using the 'poll' method.
+     * Return the smallest element in the priority queue 'q' using the 'poll' method. This will be the kth largest element in the input array.
+     * The time complexity of this algorithm is O(n log k), where n is the length of the input array 'nums'. This is because the add and poll operations on a priority queue are O(log k) time complexity, and we perform these operations for all n elements in the input array. The space complexity of this algorithm is O(k), since the priority queue only stores k elements at any given time.
      *
      * @param nums
      * @param k
@@ -239,29 +272,50 @@ public class Array {
 
     /**
      * repeating and missing
+     * <p>
+     * Intuition =>
+     * Here Xor will not work because no duplicate elements are present that we can cancel out
+     * So try to crete duplicacy
+     * <p>
      * first do xor of all elements in array
      * then do xor to 1 to n
-     * then find right most bit
+     * then find right most set bit mast
+     * ==> rsb is the last bit which has one value and after that bit all values are zero ex. 010 =>2nd is the rsb
      * then differentiate elements on the basis of right most bit set or unset
      * then check x is present or y is present and mark it as repeating or missing
+     * <p>
+     * Learnings ==>
+     * 1) RSBM
+     * 2) How to create duplicacy => by xoring -> from 1 to n
      *
      * @param arr
      * @param n
      * @return
      */
     int[] findTwoElement(int arr[], int n) {
-        int ans[] = new int[2];
+        int[] ans = new int[2];
         // code here
         int xor = 0;
-        for (int i = 0; i < arr.length; i++) {
-            xor ^= arr[i];
+
+        //doing xor for the array elements
+        for (int j : arr) {
+            xor ^= j;
         }
+
+        //xoring from 1 to n create duplicacy
         for (int i = 1; i <= arr.length; i++) {
             xor ^= i;
         }
+
+        //short trick for creating rsbm
         int rsb = xor & -xor;
+
         int x = 0;
         int y = 0;
+
+        //now we will differentiate on the basis of rsb with array elements and 1 to n
+        //note that for differentiating we are using & operator
+
         for (int val : arr) {
             if ((val & rsb) == 0) {
                 x = x ^ val;
@@ -269,6 +323,7 @@ public class Array {
                 y = y ^ val;
             }
         }
+
         for (int i = 1; i <= arr.length; i++) {
             if ((i & rsb) == 0) {
                 x = x ^ i;
@@ -276,6 +331,9 @@ public class Array {
                 y = y ^ i;
             }
         }
+
+        //now find which element is repeating
+        //present ele will be repeating and absent will be missing
         for (int val : arr) {
             if (val == x) {
                 ans[0] = x;
@@ -287,6 +345,7 @@ public class Array {
                 break;
             }
         }
+
         return ans;
     }
 
@@ -305,7 +364,7 @@ public class Array {
     //https://leetcode.com/problems/product-of-array-except-self/
     public int[] productExceptSelf(int[] arr) {
         int n = arr.length;
-        int ans[] = new int[arr.length];
+        int[] ans = new int[arr.length];
         Arrays.fill(ans, 1);
         int curr = 1;
         for (int i = 0; i < arr.length; i++) {

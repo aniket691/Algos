@@ -1,5 +1,6 @@
 package Collection.array;
 
+import Collection.sorting.Sorting;
 import org.junit.Test;
 
 import java.util.*;
@@ -95,6 +96,16 @@ public class ArrayTest {
         set.add("5");
 
         System.out.println(set.add("5"));
+    }
+
+
+    @Test
+    public void testMergeSort() {
+        int arr[] = {4, 1, 3, 5};
+//        for (int i = 4; i >= 0; i--) arr[i] = i;
+        Sorting.countSort(arr);
+        for (int i : arr) System.out.println(i);
+
     }
 
 
