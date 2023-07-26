@@ -536,4 +536,34 @@ public class LinkedLists {
         return reverseListGfg(head);
     }
 
+
+    ListNode divide(int N, ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+
+        ListNode dummyEven = new ListNode(-1);
+        ListNode dummyOdd = new ListNode(-1);
+
+        ListNode evenTail = dummyEven,
+                oddTail = dummyOdd,
+                curr = head;
+
+
+        while (curr != null) {
+            if (curr.val % 2 != 0) {
+                oddTail.next = curr;
+                oddTail = oddTail.next;
+            } else {
+                evenTail.next = curr;
+                evenTail = evenTail.next;
+            }
+            curr = curr.next;
+        }
+
+        evenTail.next = dummyOdd.next;
+        oddTail.next = null;
+
+        return dummyEven.next;
+    }
+
 }
