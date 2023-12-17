@@ -11,8 +11,9 @@ public class NextGreaterElement {
         stk.push(0);
         for (int i = 1; i < arr.length; i++) {
             //till array size is not empty and arr[i] > arr[stk.peek()]
+            // main tere se bada hu condition checking
             while (stk.size() > 0 && arr[i] > arr[stk.peek()]) {
-                //tracking the greater ele than curr and pop
+                //tracking the smaller ele than curr and pop
                 int pos = stk.peek();
                 nge[pos] = arr[i];
                 stk.pop();
