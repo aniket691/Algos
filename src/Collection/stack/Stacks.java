@@ -147,6 +147,24 @@ public class Stacks {
         }
     }
 
+    public static int isStackPermutation(int n, int[] ip, int[] op) {
+        // code here
+        Stack<Integer> st = new Stack();
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            st.push(ip[i]);
+            if (st.peek() == op[j]) {
+                while (!st.isEmpty() && st.peek() == op[j]) {
+                    st.pop();
+                    j++;
+                }
+            }
+        }
+        if (st.size() == 0) return 1;
+        // System.out.println(st.size());
+        return 0;
+    }
+
 }
 
 class twoStacks {
