@@ -1,9 +1,5 @@
 package Collection.binarySearchTree;
 
-import org.junit.Test;
-
-import java.util.Scanner;
-
 class Node {
     int data = -1;
     Node left;
@@ -16,10 +12,4 @@ class Node {
     }
 }
 
-public class BinarySearchTreeTest {
 
-    @Test
-    public void test() {
-
-    }
-}
